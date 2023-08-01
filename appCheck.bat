@@ -59,10 +59,10 @@ if not exist "%ProgramFiles(x86)%\Trend Micro" (
 :: Webex
 if not exist "%LOCALAPPDATA%\CiscoSparkLauncher\CiscoCollabHost" (
     if not exist "%APPDATA%\CiscoSparkLauncher\CiscoCollabHost" (
-        echo Webex is already installed.
+        echo Webex is not installed.
     )
 ) else (
-    echo Webex is not installed.
+    echo Webex is already installed.
 )
 
 
