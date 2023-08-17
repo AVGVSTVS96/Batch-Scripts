@@ -30,7 +30,7 @@ if exist "%APPDATA%\Zoom" (
 if not exist "%LOCALAPPDATA%\Microsoft\Teams\current\Teams.exe" (
     if not exist "%APPDATA%\Microsoft\Teams\current\Teams.exe" (
         echo Installing Microsoft Teams...
-        start "" msiexec /i "%~dp0Teams_MSI_x64.msi" 
+        start "" "%~dp0TeamsSetup_c_w_.exe" 
         )
 ) else (
     echo Microsoft Teams is already installed.
