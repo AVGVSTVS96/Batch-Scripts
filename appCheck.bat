@@ -75,6 +75,17 @@ if not exist "%ProgramFiles%\Confer" (
     echo Carbon Black is already installed.
 )
 
+:: Content Shield
+if not exist "%APPDATA%\Barracuda\Content Shield" (
+    if not exist "%ProgramFiles%\Barracuda\Content Shield" (
+        if not exist "%ProgramFiles(x86)%\Barracuda\Content Shield" (
+            echo Content Shield is not installed.
+        )
+    )
+) else (
+    echo Content Shield is already installed.
+)
+
 
 echo Installation checks complete.
 pause
