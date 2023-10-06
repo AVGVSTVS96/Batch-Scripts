@@ -31,13 +31,17 @@ if not exist "%LOCALAPPDATA%\Microsoft\Teams\current\Teams.exe" (
 
 
 :: Google Chrome
-if not exist "%ProgramFiles%\Google\Chrome\Application\chrome.exe" (
-    if not exist "%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe" (
-        echo Google Chrome is not installed.
-        )
-) else (
-    echo Google Chrome is already installed.
-)
+if exist "%ProgramFiles%\Google\Chrome\Application\chrome.exe" goto FoundChrome
+if exist "%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe" goto FoundChrome
+if exist "%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" goto FoundChrome
+
+echo Google Chrome is not installed.
+goto EndChrome
+
+:FoundChrome
+echo Google Chrome is already installed.
+
+:EndChrome
 
 
 :: AnyConnect
