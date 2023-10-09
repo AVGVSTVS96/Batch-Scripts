@@ -112,5 +112,43 @@ echo Content Shield is already installed.
 
 :EndContentShield
 
+:: Adobe Acrobat 
+if exist "%ProgramFiles%\Adobe\Acrobat 11.0" goto FoundAcro
+if exist "%ProgramFiles(x86)%\Adobe\Acrobat 11.0" goto FoundAcro
+
+echo Adobe Acrobat is not installed.
+goto EndAcro
+
+:FoundAcro
+echo Adobe Acrobat is installed.
+
+:EndAcro
+
+::Avaya
+if exist "%ProgramFiles%\Avaya Cloud" goto FoundAvaya
+if exist "%ProgramFiles(x86)%\Avaya Cloud" goto FoundAvaya
+
+echo Avaya Cloud is not installed.
+goto EndAvaya
+
+:FoundAvaya
+echo Avaya Cloud is installed.
+
+:EndAvaya
+
+
+:: Microsoft Office 365
+if exist "%ProgramFiles%\Microsoft Office" goto FoundOffice
+if exist "%ProgramFiles(x86)%\Microsoft Office" goto FoundOffice
+
+echo Microsoft Office is not installed.
+goto EndOffice
+
+:FoundOffice
+echo Microsoft Office is installed.
+
+:EndOffice
+
+
 echo Installation checks complete.
 pause
