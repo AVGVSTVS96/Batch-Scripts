@@ -134,6 +134,7 @@ echo Trend Micro is already installed.
 :: Webex
 if exist "%LOCALAPPDATA%\CiscoSparkLauncher\CiscoCollabHost" goto FoundWebex
 if exist "%APPDATA%\CiscoSparkLauncher\CiscoCollabHost" goto FoundWebex
+if exist "%LOCALAPPDATA%\WebEx" goto FoundWebex
 
 echo Webex is not installed.
 goto EndWebex
