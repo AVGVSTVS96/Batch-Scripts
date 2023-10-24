@@ -14,6 +14,7 @@ echo Adobe Acrobat is already installed.
 
 
 :: AnyConnect
+if exist "%ProgramFiles%\Cisco\Cisco AnyConnect Secure Mobility Client\vpnui.exe" goto FoundAnyConnect
 if exist "%ProgramFiles(x86)%\Cisco\Cisco AnyConnect Secure Mobility Client\vpnui.exe" goto FoundAnyConnect
 
 echo AnyConnect is not installed.
@@ -26,6 +27,7 @@ echo AnyConnect is already installed.
 
 
 :: AnyDesk
+if exist "%ProgramFiles%\AnyDesk\AnyDesk.exe" goto FoundAnyDesk
 if exist "%ProgramFiles(x86)%\AnyDesk\AnyDesk.exe" goto FoundAnyDesk
 
 echo AnyDesk is not installed.
@@ -40,6 +42,7 @@ echo AnyDesk is already installed.
 ::Avaya
 if exist "%ProgramFiles%\Avaya Cloud" goto FoundAvaya
 if exist "%ProgramFiles(x86)%\Avaya Cloud" goto FoundAvaya
+if exist "%LOCALAPPDATA%\Programs\AvayaCloud" goto FoundAvaya
 
 echo Avaya Cloud is not installed.
 goto EndAvaya
