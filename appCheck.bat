@@ -1,8 +1,11 @@
 @echo off
+set "missingApps="
 
 :: Adobe Acrobat 
 if exist "%ProgramFiles%\Adobe\Acrobat 11.0" goto FoundAcro
 if exist "%ProgramFiles(x86)%\Adobe\Acrobat 11.0" goto FoundAcro
+
+set "missingApps=%missingApps% Adobe Acrobat"
 
 echo Adobe Acrobat is not installed.
 goto EndAcro
@@ -16,6 +19,8 @@ echo Adobe Acrobat is already installed.
 :: AnyConnect
 if exist "%ProgramFiles%\Cisco\Cisco AnyConnect Secure Mobility Client\vpnui.exe" goto FoundAnyConnect
 if exist "%ProgramFiles(x86)%\Cisco\Cisco AnyConnect Secure Mobility Client\vpnui.exe" goto FoundAnyConnect
+
+set "missingApps=%missingApps% AnyConnect"
 
 echo AnyConnect is not installed.
 goto EndAnyConnect
@@ -32,6 +37,8 @@ if exist "%ProgramFiles(x86)%\AnyDesk\AnyDesk.exe" goto FoundAnyDeskInstall
 
 if exist "%USERPROFILE%\Downloads\AnyDesk.exe" goto FoundAnyDeskDownload
 if exist "%USERPROFILE%\Desktop\AnyDesk.exe" goto FoundAnyDeskDownload
+
+set "missingApps=%missingApps% AnyDesk"
 
 echo AnyDesk is not downloaded or installed.
 goto EndAnyDesk
@@ -51,6 +58,8 @@ if exist "%ProgramFiles%\Avaya Cloud" goto FoundAvaya
 if exist "%ProgramFiles(x86)%\Avaya Cloud" goto FoundAvaya
 if exist "%LOCALAPPDATA%\Programs\AvayaCloud" goto FoundAvaya
 
+set "missingApps=%missingApps% Avaya Cloud"
+
 echo Avaya Cloud is not installed.
 goto EndAvaya
 
@@ -63,6 +72,8 @@ echo Avaya Cloud is already installed.
 :: Carbon Black
 if exist "%ProgramFiles%\Confer" goto FoundCarbonBlack
 if exist "%ProgramFiles(x86)%\Confer" goto FoundCarbonBlack
+
+set "missingApps=%missingApps% Carbon Black"
 
 echo Carbon Black is not installed.
 goto EndCarbonBlack
@@ -77,6 +88,8 @@ echo Carbon Black is already installed.
 if exist "%ProgramFiles%\Barracuda\Content Shield" goto FoundContentShield
 if exist "%ProgramFiles(x86)%\Barracuda\Content Shield" goto FoundContentShield
 
+set "missingApps=%missingApps% Content Shield"
+
 echo Content Shield is not installed.
 goto EndContentShield
 
@@ -89,6 +102,8 @@ echo Content Shield is already installed.
 :: Dell Command Update
 if exist "%ProgramFiles(x86)%\Dell\CommandUpdate" goto FoundDellCommandUpdate
 if exist "%ProgramFiles%\Dell\CommandUpdate" goto FoundDellCommandUpdate
+
+set "missingApps=%missingApps% Dell Command Update"
 
 echo Dell Command Update is not installed.
 goto EndDellCommandUpdate
@@ -104,6 +119,8 @@ if exist "%ProgramFiles%\Google\Chrome\Application\chrome.exe" goto FoundChrome
 if exist "%LOCALAPPDATA%\Google\Chrome\Application\chrome.exe" goto FoundChrome
 if exist "%ProgramFiles(x86)%\Google\Chrome\Application\chrome.exe" goto FoundChrome
 
+set "missingApps=%missingApps% Google Chrome"
+
 echo Google Chrome is not installed.
 goto EndChrome
 
@@ -116,6 +133,8 @@ echo Google Chrome is already installed.
 :: Microsoft Teams
 if exist "%LOCALAPPDATA%\Microsoft\Teams\current\Teams.exe" goto FoundTeams
 if exist "%APPDATA%\Microsoft\Teams\current\Teams.exe" goto FoundTeams
+
+set "missingApps=%missingApps% Microsoft Teams"
 
 echo Microsoft Teams is not installed.
 goto EndTeams
@@ -130,6 +149,8 @@ echo Microsoft Teams is already installed.
 if exist "%ProgramFiles%\Microsoft Office" goto FoundOffice
 if exist "%ProgramFiles(x86)%\Microsoft Office" goto FoundOffice
 
+set "missingApps=%missingApps% Microsoft Office"
+
 echo Microsoft Office is not installed.
 goto EndOffice
 
@@ -141,6 +162,8 @@ echo Microsoft Office is already installed.
 
 :: Trend Micro
 if exist "%ProgramFiles(x86)%\Trend Micro" goto FoundTrendMicro
+
+set "missingApps=%missingApps% Trend Micro"
 
 echo Trend Micro WFBS-SVC is not installed.
 goto EndTrendMicro
@@ -156,6 +179,8 @@ if exist "%LOCALAPPDATA%\CiscoSparkLauncher\CiscoCollabHost" goto FoundWebex
 if exist "%APPDATA%\CiscoSparkLauncher\CiscoCollabHost" goto FoundWebex
 if exist "%LOCALAPPDATA%\WebEx" goto FoundWebex
 
+set "missingApps=%missingApps% Webex"
+
 echo Webex is not installed.
 goto EndWebex
 
@@ -170,6 +195,8 @@ if exist "%APPDATA%\Zoom" goto FoundZoom
 if exist "%ProgramFiles%\Zoom" goto FoundZoom
 if exist "%ProgramFiles(x86)%\Zoom" goto FoundZoom
 
+set "missingApps=%missingApps% Zoom"
+
 echo Zoom is not installed.
 goto EndZoom
 
@@ -180,4 +207,12 @@ echo Zoom is already installed.
 
 
 echo Installation checks complete.
+
+:: Check if any apps are missing and display them
+if not "%missingApps%"=="" (
+    echo The following apps need to be installed:%missingApps%.
+) else (
+    echo All apps are installed.
+)
+
 pause
