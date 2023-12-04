@@ -27,14 +27,21 @@ echo AnyConnect is already installed.
 
 
 :: AnyDesk
-if exist "%ProgramFiles%\AnyDesk\AnyDesk.exe" goto FoundAnyDesk
-if exist "%ProgramFiles(x86)%\AnyDesk\AnyDesk.exe" goto FoundAnyDesk
+if exist "%ProgramFiles%\AnyDesk\AnyDesk.exe" goto FoundAnyDeskInstall
+if exist "%ProgramFiles(x86)%\AnyDesk\AnyDesk.exe" goto FoundAnyDeskInstall
 
-echo AnyDesk is not installed.
+if exist "%USERPROFILE%\Downloads\AnyDesk.exe" goto FoundAnyDeskDownload
+if exist "%USERPROFILE%\Desktop\AnyDesk.exe" goto FoundAnyDeskDownload
+
+echo AnyDesk is not downloaded or installed.
 goto EndAnyDesk
 
-:FoundAnyDesk
+:FoundAnyDeskInstall
 echo AnyDesk is already installed.
+goto EndAnyDesk
+
+:FoundAnyDeskDownload
+echo AnyDesk is downloaded but not installed.
 
 :EndAnyDesk
 
@@ -77,6 +84,7 @@ goto EndContentShield
 echo Content Shield is already installed.
 
 :EndContentShield
+
 
 :: Dell Command Update
 if exist "%ProgramFiles(x86)%\Dell\CommandUpdate" goto FoundDellCommandUpdate
