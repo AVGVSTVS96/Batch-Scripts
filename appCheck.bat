@@ -78,6 +78,18 @@ echo Content Shield is already installed.
 
 :EndContentShield
 
+:: Dell Command Update
+if exist "%ProgramFiles(x86)%\Dell\CommandUpdate" goto FoundDellCommandUpdate
+if exist "%ProgramFiles%\Dell\CommandUpdate" goto FoundDellCommandUpdate
+
+echo Dell Command Update is not installed.
+goto EndDellCommandUpdate
+
+:FoundDellCommandUpdate
+echo Dell Command Update is already installed.
+
+:EndDellCommandUpdate
+
 
 :: Google Chrome
 if exist "%ProgramFiles%\Google\Chrome\Application\chrome.exe" goto FoundChrome
