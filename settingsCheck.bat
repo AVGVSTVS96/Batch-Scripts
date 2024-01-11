@@ -1,6 +1,10 @@
 @echo off
 SETLOCAL EnableDelayedExpansion
 
+:: Get the computer name
+FOR /F "tokens=*" %%a IN ('hostname') DO SET COMPUTER_NAME=%%a
+echo System Name: !COMPUTER_NAME!
+
 :: Get the active power scheme
 FOR /F "tokens=2 delims=:(" %%i IN ('powercfg /GETACTIVESCHEME') DO SET SCHEME_GUID=%%i
 
