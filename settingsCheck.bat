@@ -43,9 +43,18 @@ IF "!SLEEP_TIME_HEX!"=="00000000" (
     SET /A SLEEP_TIME=!SLEEP_TIME_DEC! / 60
 )
 
-:: Display the settings
-echo Display turns off after: !DISPLAY_OFF_TIME!
-echo PC goes to sleep after: !SLEEP_TIME!
+:: Display the settings with conditional 'minutes'
+IF NOT "!DISPLAY_OFF_TIME!"=="Never" (
+    echo Display turns off after: !DISPLAY_OFF_TIME! minutes
+) ELSE (
+    echo Display turns off after: !DISPLAY_OFF_TIME!
+)
+
+IF NOT "!SLEEP_TIME!"=="Never" (
+    echo PC goes to sleep after: !SLEEP_TIME! minutes
+) ELSE (
+    echo PC goes to sleep after: !SLEEP_TIME!
+)
 
 ENDLOCAL
 pause
