@@ -17,11 +17,9 @@ FOR /F "delims=" %%j IN ('powercfg /QUERY !SCHEME_GUID! SUB_VIDEO VIDEOIDLE ^| f
     SET DISPLAY_OFF_TIME_HEX=!line:*: 0x=!
 )
 
-
-:: Check if the value is empty
-IF "!DISPLAY_OFF_TIME_HEX!"=="" (
-    echo Display off time hex value not found
-    SET DISPLAY_OFF_TIME=Unknown
+:: Check if the value represents 'Never' (0x00000000)
+IF "!DISPLAY_OFF_TIME_HEX!"=="00000000" (
+    SET DISPLAY_OFF_TIME=Never
 ) ELSE (
     :: Convert Hex to Dec
     SET /A DISPLAY_OFF_TIME_DEC=0x!DISPLAY_OFF_TIME_HEX!
@@ -35,11 +33,9 @@ FOR /F "delims=" %%k IN ('powercfg /QUERY !SCHEME_GUID! SUB_SLEEP STANDBYIDLE ^|
     SET SLEEP_TIME_HEX=!line:*: 0x=!
 )
 
-
-:: Check if the value is empty
-IF "!SLEEP_TIME_HEX!"=="" (
-    echo Sleep time hex value not found
-    SET SLEEP_TIME=Unknown
+:: Check if the value represents 'Never' (0x00000000)
+IF "!SLEEP_TIME_HEX!"=="00000000" (
+    SET SLEEP_TIME=Never
 ) ELSE (
     :: Convert Hex to Dec
     SET /A SLEEP_TIME_DEC=0x!SLEEP_TIME_HEX!
@@ -48,8 +44,8 @@ IF "!SLEEP_TIME_HEX!"=="" (
 )
 
 :: Display the settings
-echo Display turns off after: !DISPLAY_OFF_TIME! minutes
-echo PC goes to sleep after: !SLEEP_TIME! minutes
+echo Display turns off after: !DISPLAY_OFF_TIME!
+echo PC goes to sleep after: !SLEEP_TIME!
 
 ENDLOCAL
 pause
