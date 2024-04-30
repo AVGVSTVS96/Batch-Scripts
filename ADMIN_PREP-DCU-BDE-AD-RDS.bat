@@ -21,4 +21,8 @@ echo Disabling Bit Locker Encryption
 start "" /B manage-bde -off c:
 echo Bit Locker Encryption Disabled
 
+:: Add remote desktop icon to desktop
+echo Adding Remote Desktop icon to desktop
+powershell -ExecutionPolicy Bypass -Command "$TargetFile = \"$env:SystemRoot\System32\mstsc.exe\"; $ShortcutFile = \"$env:Userprofile\Desktop\Remote Desktop Connection.lnk\"; $WScriptShell = New-Object -ComObject WScript.Shell; $Shortcut = $WScriptShell.CreateShortcut($ShortcutFile); $Shortcut.TargetPath = $TargetFile; $Shortcut.Save();"
+
 pause
