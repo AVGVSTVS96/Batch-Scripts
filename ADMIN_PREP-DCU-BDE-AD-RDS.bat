@@ -4,7 +4,7 @@ SETLOCAL
 :: Install Dell Command Update
 SET "MSIPath=%~dp0DellCommandUpdateApp.msi"
 echo Installing Dell Command Update
-start "" /B msiexec /i "%MSIPath%" /qn
+msiexec /i "%MSIPath%" /qn
 echo Dell Command Update Installed Successfully.
 echo.
 
