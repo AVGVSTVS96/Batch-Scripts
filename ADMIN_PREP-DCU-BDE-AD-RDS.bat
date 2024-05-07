@@ -4,8 +4,12 @@ SETLOCAL
 :: Install Dell Command Update
 SET "MSIPath=%~dp0DellCommandUpdateApp.msi"
 echo Installing Dell Command Update
-start "" msiexec /i "%MSIPath%" /qn
-echo Dell Command Update Installed Successfully.
+msiexec /i "%MSIPath%" /qn
+IF %ERRORLEVEL% EQU 0 (
+    echo Dell Command Update Installed Successfully.
+) ELSE (
+    echo Dell Command Update Installation Failed.
+)
 echo.
 
 :: Download AnyDesk exe and add to desktop without installing
