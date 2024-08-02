@@ -43,7 +43,7 @@ if %errorlevel% equ 0 (
     echo BitLocker encryption has been disabled for drive C:.
     echo Please restart your computer to complete the BitLocker disabling process.
 ) else (
-    echo BitLocker is already disabled or an error occurred while disabling.
+    echo BitLocker is already disabled.
 )
 echo.
 
