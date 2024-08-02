@@ -1,16 +1,25 @@
 @echo off
 SETLOCAL
 
-:: Install Dell Command Update
+:: Check for Dell Command Update
+echo Checking if Dell Command Update is already installed...
+if exist "%ProgramFiles(x86)%\Dell\CommandUpdate" goto FoundDellCommandUpdate
+if exist "%ProgramFiles%\Dell\CommandUpdate" goto FoundDellCommandUpdate
+
+:: If not found, proceed with installation
 SET "MSIPath=%~dp0DellCommandUpdateApp.msi"
-echo Installing Dell Command Update
+echo Dell Command Update not found. Installing...
 msiexec /i "%MSIPath%" /qn
 IF %ERRORLEVEL% EQU 0 (
     echo Dell Command Update Installed Successfully.
 ) ELSE (
     echo Dell Command Update Installation Failed.
 )
+
+:FoundDellCommandUpdate
+echo Dell Command Update is already installed.
 echo.
+
 
 :: Download AnyDesk exe and add to desktop without installing
 echo Downloading AnyDesk
