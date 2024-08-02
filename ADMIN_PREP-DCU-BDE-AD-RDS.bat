@@ -20,13 +20,20 @@ IF %ERRORLEVEL% EQU 0 (
 echo Dell Command Update is already installed.
 echo.
 
-
-:: Download AnyDesk exe and add to desktop without installing
-echo Downloading AnyDesk
+:: Check if AnyDesk is already on desktop, download if not present
 SET AnyDeskURL=https://download.anydesk.com/AnyDesk.exe
 SET DestinationPath=%USERPROFILE%\Desktop\AnyDesk.exe
-start "" PowerShell -Command "Invoke-WebRequest -Uri '%AnyDeskURL%' -OutFile '%DestinationPath%'"
-echo AnyDesk has been downloaded and added to your Desktop.
+IF EXIST "%DestinationPath%" (
+    echo AnyDesk is already present on the Desktop.
+) ELSE (
+    echo Downloading AnyDesk
+    PowerShell -Command "$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri '%AnyDeskURL%' -OutFile '%DestinationPath%'"
+    IF EXIST "%DestinationPath%" (
+        echo AnyDesk has been downloaded and added to your Desktop.
+    ) ELSE (
+        echo Failed to download AnyDesk.
+    )
+)
 echo.
 
 :: Check and disable BDE for C: drive if enabled
