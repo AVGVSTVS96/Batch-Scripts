@@ -2,7 +2,7 @@
 SETLOCAL
 
 :: Check for Dell Command Update
-echo Checking if Dell Command Update is already installed...
+echo Checking for Dell Command Update...
 if exist "%ProgramFiles(x86)%\Dell\CommandUpdate" goto FoundDellCommandUpdate
 if exist "%ProgramFiles%\Dell\CommandUpdate" goto FoundDellCommandUpdate
 
@@ -21,6 +21,7 @@ echo Dell Command Update is already installed.
 echo.
 
 :: Check if AnyDesk is already on desktop, download if not present
+echo Checking for AnyDesk...
 SET AnyDeskURL=https://download.anydesk.com/AnyDesk.exe
 SET DestinationPath=%USERPROFILE%\Desktop\AnyDesk.exe
 IF EXIST "%DestinationPath%" (
@@ -47,8 +48,20 @@ if %errorlevel% equ 0 (
 )
 echo.
 
-:: Add remote desktop icon to desktop
-echo Adding Remote Desktop icon to desktop
-powershell -ExecutionPolicy Bypass -Command "$TargetFile = \"$env:SystemRoot\System32\mstsc.exe\"; $ShortcutFile = \"$env:Userprofile\Desktop\Remote Desktop Connection.lnk\"; $WScriptShell = New-Object -ComObject WScript.Shell; $Shortcut = $WScriptShell.CreateShortcut($ShortcutFile); $Shortcut.TargetPath = $TargetFile; $Shortcut.Save();"
+:: Add remote desktop shortcut to desktop
+echo Checking for Remote Desktop shortcut...
+SET "ShortcutFile=%Userprofile%\Desktop\Remote Desktop Connection.lnk"
+
+IF EXIST "%ShortcutFile%" (
+    echo Remote Desktop shortcut is already on the Desktop.
+) ELSE (
+    echo Adding Remote Desktop shortcut to desktop
+    powershell -ExecutionPolicy Bypass -Command "$TargetFile = \"$env:SystemRoot\System32\mstsc.exe\"; $ShortcutFile = \"$env:Userprofile\Desktop\Remote Desktop Connection.lnk\"; $WScriptShell = New-Object -ComObject WScript.Shell; $Shortcut = $WScriptShell.CreateShortcut($ShortcutFile); $Shortcut.TargetPath = $TargetFile; $Shortcut.Save();"
+    IF EXIST "%ShortcutFile%" (
+        echo Remote Desktop shortcut has been added to the Desktop.
+    ) ELSE (
+        echo Failed to create Remote Desktop shortcut.
+    )
+)
 
 pause
