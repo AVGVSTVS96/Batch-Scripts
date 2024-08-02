@@ -20,10 +20,16 @@ start "" PowerShell -Command "Invoke-WebRequest -Uri '%AnyDeskURL%' -OutFile '%D
 echo AnyDesk has been downloaded and added to your Desktop.
 echo.
 
-:: Disable BDE for C: drive
-echo Disabling Bit Locker Encryption
-start "" /B manage-bde -off c:
-echo Bit Locker Encryption Disabled
+:: Check and disable BDE for C: drive if enabled
+echo Checking BitLocker status and disabling if enabled...
+manage-bde -off C: > nul 2>&1
+if %errorlevel% equ 0 (
+    echo BitLocker encryption has been disabled for drive C:.
+    echo Please restart your computer to complete the BitLocker disabling process.
+) else (
+    echo BitLocker is already disabled or an error occurred while disabling.
+)
+echo.
 
 :: Add remote desktop icon to desktop
 echo Adding Remote Desktop icon to desktop
