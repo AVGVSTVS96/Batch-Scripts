@@ -1,7 +1,6 @@
 @echo off
 SETLOCAL
-echo this is a really cool test!!
-echo.
+
 :: Check for Dell Command Update
 echo Checking for Dell Command Update...
 if exist "%ProgramFiles(x86)%\Dell\CommandUpdate" goto FoundDellCommandUpdate
