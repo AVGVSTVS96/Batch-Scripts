@@ -1,19 +1,14 @@
-:: @echo off
-
-:: Add this to USB root, run it to git pull batch scripts and copy ADMIN_PREP-DCU-BDE-AD-RDS.bat to USB root
-:: cd "Batch Scripts"
-:: git pull
-:: copy "ADMIN_PREP-DCU-BDE-AD-RDS.bat" "..\ADMIN_PREP-DCU-BDE-AD-RDS.bat"
-:: cd ..
-:: echo Update complete and file copied to USB root.
-:: pause
+:: Put this file in USB root, it will update all scripts on the USB
 
 @echo off
 setlocal enabledelayedexpansion
 
+echo Changing directory to Batch Scripts...
 cd "Batch Scripts"
 
-echo Updating repository...
+echo.
+
+echo Running git pull in Batch Scripts...
 git pull
 if %errorlevel% neq 0 (
     echo Error: Git pull failed. Exiting script.
@@ -22,15 +17,16 @@ if %errorlevel% neq 0 (
     exit /b %errorlevel%
 )
 
-echo Git pull successful. Copying changed files to USB root...
+echo Git pull successful. Updating existing files in USB root...
+echo.
 for /f "tokens=*" %%a in ('git diff --name-only HEAD@{1} HEAD') do (
     if exist "%%a" (
         if exist "..\%%~nxa" (
             echo Updating %%~nxa in USB root...
+            copy /Y "%%a" "..\%%~nxa"
         ) else (
-            echo Creating %%~nxa in USB root...
+            echo %%~nxa does not exist in USB root. Skipping...
         )
-        copy /Y "%%a" "..\%%~nxa"
     )
 )
 
