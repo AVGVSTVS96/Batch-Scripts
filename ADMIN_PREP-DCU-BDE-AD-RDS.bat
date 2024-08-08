@@ -1,5 +1,8 @@
 @echo off
-SETLOCAL
+SETLOCAL enabledelayedexpansion
+
+:: Define the escape character for color
+for /f %%i in ('echo prompt $E ^| cmd') do set "ESC=%%i"
 
 :: Check for Dell Command Update
 echo Checking for Dell Command Update...
@@ -42,13 +45,14 @@ IF EXIST "%DestinationPath%" (
 echo.
 
 :: Check and disable BDE for C: drive if enabled
-echo Checking BitLocker encryption status and disabling if enabled...
+echo %ESC%[1;94mChecking BitLocker encryption status and disabling if enabled...%ESC%[0m
+
 manage-bde -off C: > nul 2>&1
 if %errorlevel% equ 0 (
-    echo BitLocker encryption has been disabled for drive C:.
+    echo %ESC%[1;92mBitLocker encryption has been disabled for drive C:.%ESC%[0m
     echo Please restart your computer to complete the BitLocker disabling process.
 ) else (
-    echo BitLocker encryption is already disabled.
+    echo %ESC%[1;92mBitLocker encryption is already disabled.%ESC%[0m
 )
 echo.
 
