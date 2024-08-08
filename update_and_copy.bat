@@ -3,7 +3,6 @@
 @echo off
 setlocal enabledelayedexpansion
 
-color 07
 
 echo Changing directory to Batch Scripts...
 cd "Batch Scripts"
@@ -19,9 +18,7 @@ if %errorlevel% neq 0 (
     exit /b %errorlevel%
 )
 echo.
-color 03
 echo Git pull successful. Updating existing files in USB root...
-color 07
 echo.
 for /f "tokens=*" %%a in ('git diff --name-only HEAD@{1} HEAD') do (
     if exist "%%a" (
@@ -35,9 +32,6 @@ for /f "tokens=*" %%a in ('git diff --name-only HEAD@{1} HEAD') do (
 )
 
 cd ..
-echo.
-color 0A
 echo Update complete. Files in USB root are now up-to-date.
-color 07
 echo.
 pause
