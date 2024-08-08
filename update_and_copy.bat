@@ -11,13 +11,13 @@ echo.
 echo Running git pull in Batch Scripts...
 git pull
 if %errorlevel% neq 0 (
-    echo Error: Git pull failed. Exiting script.
+    echo [91mError: Git pull failed. Exiting script.[0m
     cd ..
     pause
     exit /b %errorlevel%
 )
-
-echo Git pull successful. Updating existing files in USB root...
+echo.
+echo [96mGit pull successful. Updating existing files in USB root...[0m
 echo.
 for /f "tokens=*" %%a in ('git diff --name-only HEAD@{1} HEAD') do (
     if exist "%%a" (
@@ -31,5 +31,7 @@ for /f "tokens=*" %%a in ('git diff --name-only HEAD@{1} HEAD') do (
 )
 
 cd ..
-echo Update complete. Files in USB root are now up-to-date.
+echo.
+echo [92mUpdate complete. Files in USB root are now up-to-date.[0m
+echo.
 pause
