@@ -14,7 +14,9 @@ IF %ERRORLEVEL% EQU 0 (
     echo Dell Command Update Installed Successfully.
 ) ELSE (
     echo Dell Command Update Installation Failed.
-) goto FinishedDellCommandUpdate
+    pause
+) 
+goto FinishedDellCommandUpdate
 
 :FoundDellCommandUpdate
 echo Dell Command Update is already installed.
