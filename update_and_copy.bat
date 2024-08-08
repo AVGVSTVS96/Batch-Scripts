@@ -3,6 +3,7 @@
 @echo off
 setlocal enabledelayedexpansion
 
+echo testing...
 
 echo Changing directory to Batch Scripts...
 cd "Batch Scripts"
