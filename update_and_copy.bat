@@ -32,6 +32,6 @@ for /f "tokens=*" %%a in ('git diff --name-only HEAD@{1} HEAD') do (
 )
 
 cd ..
-echo Update complete. Files in USB root are now up-to-date.
+echo Update complete. Scripts in USB root are now up-to-date.
 echo.
 pause
