@@ -1,11 +1,21 @@
 @echo off
-SETLOCAL
+setlocal enabledelayedexpansion
 
-:: Set the path to your MSI file
-SET "MSIPath=%~dp0DellCommandUpdateApp.msi"
+echo Checking for Dell Command Update...
+for %%P in ("%ProgramFiles(x86)%\Dell\CommandUpdate" "%ProgramFiles%\Dell\CommandUpdate") do (
+    if exist "%%~P" (
+        echo Dell Command Update found at: %%~P
+        goto :FinishedDellCommandUpdate
+    )
+)
 
-:: Run the installer in quiet mode with no user interaction
-msiexec /i "%MSIPath%" /qn
+echo Installing Dell Command Update...
+msiexec /i "%~dp0DellCommandUpdateApp.msi" /qn && (
+    echo Dell Command Update Installed Successfully.
+) || (
+    echo Dell Command Update Installation Failed.
+)
 
-echo Installation completed.
+:FinishedDellCommandUpdate
+echo.
 pause

@@ -1,14 +1,23 @@
 @echo off
 SETLOCAL
 
-:: Set the download URL for AnyDesk
-SET AnyDeskURL=https://download.anydesk.com/AnyDesk.exe
+:: Check if AnyDesk is already on desktop, download if not present
+echo Checking for AnyDesk...
+set "AnyDeskURL=https://download.anydesk.com/AnyDesk.exe"
 
-:: Set the destination path on the Desktop
-SET DestinationPath=%USERPROFILE%\Desktop\AnyDesk.exe
+for %%P in ("%USERPROFILE%\Desktop\AnyDesk.exe" "C:\Users\vboxuser\Desktop\AnyDesk.exe" "C:\Users\public\Desktop\AnyDesk.exe") do (
+    if exist "%%P" (
+        echo AnyDesk found at: %%P
+        goto :FoundAnyDesk
+    )
+)
 
-:: Use PowerShell to download the file
-PowerShell -Command "Invoke-WebRequest -Uri '%AnyDeskURL%' -OutFile '%DestinationPath%'"
+echo Downloading AnyDesk...
+PowerShell -Command "$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri '%AnyDeskURL%' -OutFile '%USERPROFILE%\Desktop\AnyDesk.exe'" && (
+    echo AnyDesk has been downloaded and added to the Desktop.
+) || (
+    echo Failed to download AnyDesk.
+)
 
-echo AnyDesk has been downloaded to your Desktop.
+:FoundAnyDesk
 pause
