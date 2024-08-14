@@ -20,7 +20,7 @@ echo.
 echo Git pull successful. Updating existing files in USB root...
 echo.
 
-robocopy . .. /XL
+robocopy . .. /XL /XX
 
 cd ..
 echo Update complete. Scripts in USB root are now up-to-date.
