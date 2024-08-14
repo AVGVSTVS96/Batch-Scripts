@@ -4,56 +4,43 @@ SETLOCAL enabledelayedexpansion
 :: Define the escape character for color
 for /f %%i in ('echo prompt $E ^| cmd') do set "ESC=%%i"
 
-:: Check for Dell Command Update
 echo Checking for Dell Command Update...
-if exist "%ProgramFiles(x86)%\Dell\CommandUpdate" goto FoundDellCommandUpdate
-if exist "%ProgramFiles%\Dell\CommandUpdate" goto FoundDellCommandUpdate
+for %%P in ("%ProgramFiles(x86)%\Dell\CommandUpdate" "%ProgramFiles%\Dell\CommandUpdate") do (
+    if exist "%%~P" (
+        echo Dell Command Update found at: %%~P
+        goto :FinishedDellCommandUpdate
+    )
+)
 
-:: If not found, proceed with installation
-SET "MSIPath=%~dp0DellCommandUpdateApp.msi"
-echo Dell Command Update not found. Installing...
-msiexec /i "%MSIPath%" /qn
-IF %ERRORLEVEL% EQU 0 (
+echo Installing Dell Command Update...
+msiexec /i "%~dp0DellCommandUpdateApp.msi" /qn && (
     echo Dell Command Update Installed Successfully.
-) ELSE (
+) || (
     echo Dell Command Update Installation Failed.
-    pause
-) 
-goto FinishedDellCommandUpdate
-
-:FoundDellCommandUpdate
-echo Dell Command Update is already installed.
+)
 
 :FinishedDellCommandUpdate
 echo.
 
 :: Check if AnyDesk is already on desktop, download if not present
 echo Checking for AnyDesk...
-SET AnyDeskURL=https://download.anydesk.com/AnyDesk.exe
-SET DestinationPath=%USERPROFILE%\Desktop\AnyDesk.exe
-IF EXIST "%DestinationPath%" (
-    echo AnyDesk is already present on the Desktop.
-) ELSE (
-    echo Downloading AnyDesk
-    PowerShell -Command "$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri '%AnyDeskURL%' -OutFile '%DestinationPath%'"
-    IF EXIST "%DestinationPath%" (
-        echo AnyDesk has been downloaded and added to the Desktop.
-    ) ELSE (
-        echo Failed to download AnyDesk.
+set "AnyDeskURL=https://download.anydesk.com/AnyDesk.exe"
+
+for %%P in ("%USERPROFILE%\Desktop\AnyDesk.exe" "C:\Users\vboxuser\Desktop\AnyDesk.exe" "C:\Users\public\Desktop\AnyDesk.exe") do (
+    if exist "%%P" (
+        echo AnyDesk found at: %%P
+        goto :FoundAnyDesk
     )
 )
-echo.
 
-:: Check and disable BDE for C: drive if enabled
-echo %ESC%[1;94mChecking BitLocker encryption status and disabling if enabled...%ESC%[0m
-
-manage-bde -off C: > nul 2>&1
-if %errorlevel% equ 0 (
-    echo %ESC%[1;92mBitLocker encryption has been disabled for drive C:.%ESC%[0m
-    echo Please restart your computer to complete the BitLocker disabling process.
-) else (
-    echo %ESC%[1;92mBitLocker encryption is already disabled.%ESC%[0m
+echo Downloading AnyDesk...
+PowerShell -Command "$ProgressPreference = 'SilentlyContinue'; Invoke-WebRequest -Uri '%AnyDeskURL%' -OutFile '%USERPROFILE%\Desktop\AnyDesk.exe'" && (
+    echo AnyDesk has been downloaded and added to the Desktop.
+) || (
+    echo Failed to download AnyDesk.
 )
+
+:FoundAnyDesk
 echo.
 
 :: Add remote desktop shortcut to desktop
@@ -71,5 +58,24 @@ IF EXIST "%ShortcutFile%" (
         echo Failed to create Remote Desktop shortcut.
     )
 )
+echo.
+
+:: Check for administrative privileges before disabling BitLocker
+net session >nul 2>&1
+if %errorlevel% neq 0 (
+    echo %ESC%[1;91mError:%ESC%[0m Disabling BitLocker requires administrative privileges...
+    echo Run this script as an administrator to disable BitLocker.
+    goto :SkipBitLocker
+)
+
+:: Disable BDE for C: drive if enabled
+echo %ESC%[1;94mChecking BitLocker encryption status and disabling if enabled...%ESC%[0m
+
+manage-bde -off C: > nul 2>&1 && (
+    echo %ESC%[1;92mBitLocker encryption has been disabled for drive C:.%ESC%[0m
+) || echo %ESC%[1;92mBitLocker encryption is already disabled.%ESC%[0m
+
+:SkipBitLocker
+
 echo.
 pause
