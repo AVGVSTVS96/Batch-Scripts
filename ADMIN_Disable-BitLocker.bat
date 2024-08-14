@@ -1,9 +1,6 @@
 @echo off
 SETLOCAL enabledelayedexpansion
 
-:: Enable Virtual Terminal Processing
-:: reg add HKCU\Console /v VirtualTerminalLevel /t REG_DWORD /d 1 /f
-
 :: Define the escape character for color
 for /f %%i in ('echo prompt $E ^| cmd') do set "ESC=%%i"
 
