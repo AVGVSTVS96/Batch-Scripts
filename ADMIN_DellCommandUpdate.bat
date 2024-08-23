@@ -1,6 +1,15 @@
 @echo off
 setlocal enabledelayedexpansion
 
+:: Check for administrative privileges
+:: Required for installing Dell Command Update
+net session >nul 2>&1
+if %errorlevel% neq 0 (
+    echo %ESC%[1;91mError:%ESC%[0m Installing  Dell Command Update scripts require administrative privileges...
+    echo Run this script in an admin terminal.
+    goto :FinishedDellCommandUpdate
+)
+
 echo Checking for Dell Command Update...
 for %%P in ("%ProgramFiles(x86)%\Dell\CommandUpdate" "%ProgramFiles%\Dell\CommandUpdate") do (
     if exist "%%~P" (

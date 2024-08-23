@@ -4,6 +4,15 @@ SETLOCAL enabledelayedexpansion
 :: Define the escape character for color
 for /f %%i in ('echo prompt $E ^| cmd') do set "ESC=%%i"
 
+:: Check for administrative privileges
+:: Required for disabling BitLocker and installing Dell Command Update
+net session >nul 2>&1
+if %errorlevel% neq 0 (
+    echo %ESC%[1;91mError:%ESC%[0m BitLocker and Dell Command Update scripts require administrative privileges...
+    echo Run this script in an admin terminal.
+    goto :SkipBitLocker
+)
+
 echo Checking for Dell Command Update...
 for %%P in ("%ProgramFiles(x86)%\Dell\CommandUpdate" "%ProgramFiles%\Dell\CommandUpdate") do (
     if exist "%%~P" (
@@ -20,6 +29,17 @@ msiexec /i "%~dp0DellCommandUpdateApp.msi" /qn && (
 )
 
 :FinishedDellCommandUpdate
+echo.
+
+:: Disable BDE for C: drive if enabled
+echo %ESC%[1;94mChecking BitLocker encryption status and disabling if enabled...%ESC%[0m
+
+manage-bde -off C: > nul 2>&1 && (
+    echo %ESC%[1;92mBitLocker encryption has been disabled for drive C:.%ESC%[0m
+) || echo %ESC%[1;92mBitLocker encryption is already disabled.%ESC%[0m
+
+:SkipBitLocker
+
 echo.
 
 :: Check if AnyDesk is already on desktop, download if not present
@@ -60,22 +80,5 @@ IF EXIST "%ShortcutFile%" (
 )
 echo.
 
-:: Check for administrative privileges before disabling BitLocker
-net session >nul 2>&1
-if %errorlevel% neq 0 (
-    echo %ESC%[1;91mError:%ESC%[0m Disabling BitLocker requires administrative privileges...
-    echo Run this script as an administrator to disable BitLocker.
-    goto :SkipBitLocker
-)
 
-:: Disable BDE for C: drive if enabled
-echo %ESC%[1;94mChecking BitLocker encryption status and disabling if enabled...%ESC%[0m
-
-manage-bde -off C: > nul 2>&1 && (
-    echo %ESC%[1;92mBitLocker encryption has been disabled for drive C:.%ESC%[0m
-) || echo %ESC%[1;92mBitLocker encryption is already disabled.%ESC%[0m
-
-:SkipBitLocker
-
-echo.
 pause
