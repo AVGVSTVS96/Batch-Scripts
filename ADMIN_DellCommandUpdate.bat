@@ -1,6 +1,9 @@
 @echo off
 setlocal enabledelayedexpansion
 
+:: Define the escape character for color
+for /f %%i in ('echo prompt $E ^| cmd') do set "ESC=%%i"
+
 :: Check for administrative privileges
 :: Required for installing Dell Command Update
 net session >nul 2>&1
