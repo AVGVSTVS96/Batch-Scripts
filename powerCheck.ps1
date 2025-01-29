@@ -25,7 +25,7 @@ foreach ($powerSource in @("AC", "DC")) {
         } else {
             $displayValue = "Unable to retrieve"
         }
-        Write-Host "$($setting.Name) turns off after: $displayValue"
+        Write-Host "$($setting.Name) set to: $displayValue"
     }
     Write-Host ""
 }
