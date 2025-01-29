@@ -12,12 +12,18 @@ net session >nul 2>&1 || (
     exit /b 1
 )
 
-:: Check and disable BDE for C: drive if enabled
-echo %ESC%[1;94mChecking BitLocker encryption status and disabling if enabled...%ESC%[0m
+:: Disable active BitLocker encryption processes
+echo %ESC%[1;94mDisabling active BitLocker encryption processes...%ESC%[0m
+manage-bde -off C: > nul 2>&1
 
-manage-bde -off C: > nul 2>&1 && (
-    echo %ESC%[1;92mBitLocker encryption has been disabled for drive C:.%ESC%[0m
-) || echo %ESC%[1;92mBitLocker encryption is already disabled.%ESC%[0m
-
+:: Stop and disable the BitLocker service itself
+echo %ESC%[1;94mDisabling BitLocker service...%ESC%[0m
+net stop BDESVC >nul 2>&1
+sc config "BDESVC" start= disabled >nul 2>&1
+if !errorlevel! neq 0 (
+    echo %ESC%[1;91mError: Could not disable the BitLocker service.%ESC%[0m
+) else (
+    echo %ESC%[1;92mBitLocker service has been disabled.%ESC%[0m
+)
 echo.
 pause
