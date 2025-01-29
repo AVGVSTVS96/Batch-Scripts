@@ -5,8 +5,11 @@
 @echo off
 setlocal enabledelayedexpansion
 
-:: Get the current directory's drive letter
-for %%I in (.) do set "USB_DRIVE=%%~dI"
+:: Store the USB drive letter
+set "USB_DRIVE=%~d0"
+
+:: Use delayed expansion to fix errors with unexapanded variables
+set "PORTABLE_GIT=!USB_DRIVE!\PortableGit"
 
 :: Check if git is available
 where git >nul 2>nul
@@ -16,20 +19,17 @@ if %errorlevel% equ 0 (
 ) else (
     echo System Git not found, using portable Git from USB...
     
-    :: Set up portable Git environment
-    set "PORTABLE_GIT=%USB_DRIVE%\PortableGit"
-    
-    if not exist "%PORTABLE_GIT%\cmd\git.exe" (
-        echo Error: Portable Git not found at %PORTABLE_GIT%
+    if not exist "!PORTABLE_GIT!\cmd\git.exe" (
+        echo Error: Portable Git not found at !PORTABLE_GIT!
         echo Please ensure PortableGit is extracted to the USB root.
-        echo Expected path: %PORTABLE_GIT%\cmd\git.exe
+        echo Expected path: !PORTABLE_GIT!\cmd\git.exe
         pause
         exit /b 1
     )
     
     :: Set up Git environment variables
-    set "PATH=%PORTABLE_GIT%\cmd;%PATH%"
-    set "GIT_COMMAND=%PORTABLE_GIT%\cmd\git.exe"
+    set "PATH=!PORTABLE_GIT!\cmd;%PATH%"
+    set "GIT_COMMAND=!PORTABLE_GIT!\cmd\git.exe"
 )
 
 echo Changing directory to Batch Scripts...
