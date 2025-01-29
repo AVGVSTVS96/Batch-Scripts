@@ -14,10 +14,10 @@ set "PORTABLE_GIT=!USB_DRIVE!\PortableGit"
 :: Check if git is available
 where git >nul 2>nul
 if %errorlevel% equ 0 (
-    echo System Git found, using system installation...
+    REM echo System Git found, using system installation...
     set "GIT_COMMAND=git"
 ) else (
-    echo System Git not found, using portable Git from USB...
+    REM echo System Git not found, using portable Git from USB...
     
     if not exist "!PORTABLE_GIT!\cmd\git.exe" (
         echo Error: Portable Git not found at !PORTABLE_GIT!
@@ -32,7 +32,7 @@ if %errorlevel% equ 0 (
     set "GIT_COMMAND=!PORTABLE_GIT!\cmd\git.exe"
 )
 
-echo Changing directory to Batch Scripts...
+REM echo Changing directory to Batch Scripts...
 cd "Batch Scripts"
 
 echo.
@@ -40,22 +40,22 @@ echo.
 :: Add current directory to git's safe list
 "%GIT_COMMAND%" config --global --add safe.directory "!CD!"
 
-echo Running git pull in Batch Scripts...
+echo Fetching latest changes in Batch Scripts...
 "%GIT_COMMAND%" pull
 if %errorlevel% neq 0 (
-    echo Error: Git pull failed. Exiting script.
+    echo Error: Fetching latest changes failed. Exiting script.
     cd ..
     pause
     exit /b %errorlevel%
 )
 
 echo.
-echo Git pull successful. Updating existing files in USB root...
+echo Successfully updated Batch Scripts. Updating existing files in USB root...
 echo.
 
 robocopy . .. /XL /XX
 
 cd ..
-echo Update complete. Scripts in USB root are now up-to-date.
+echo Update complete. All scripts are now up-to-date.
 echo.
 pause
