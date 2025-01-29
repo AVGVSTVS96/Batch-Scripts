@@ -37,6 +37,9 @@ cd "Batch Scripts"
 
 echo.
 
+:: Add current directory to git's safe list
+"%GIT_COMMAND%" config --global --add safe.directory "!CD!"
+
 echo Running git pull in Batch Scripts...
 "%GIT_COMMAND%" pull
 if %errorlevel% neq 0 (
