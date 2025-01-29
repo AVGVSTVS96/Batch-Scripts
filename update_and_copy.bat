@@ -5,7 +5,8 @@
 @echo off
 setlocal enabledelayedexpansion
 
-set "USB_DRIVE=%~d0"
+:: Get the current directory's drive letter
+for %%I in (.) do set "USB_DRIVE=%%~dI"
 
 :: Check if git is available
 where git >nul 2>nul
@@ -20,7 +21,7 @@ if %errorlevel% equ 0 (
     
     if not exist "%PORTABLE_GIT%\cmd\git.exe" (
         echo Error: Portable Git not found at %PORTABLE_GIT%
-        echo Please ensure PortableGit is extracted to the USB drive root.
+        echo Please ensure PortableGit is extracted to the USB root.
         echo Expected path: %PORTABLE_GIT%\cmd\git.exe
         pause
         exit /b 1
