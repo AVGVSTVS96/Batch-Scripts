@@ -21,12 +21,18 @@ for %%P in ("%ProgramFiles(x86)%\Dell\CommandUpdate" "%ProgramFiles%\Dell\Comman
     )
 )
 
-echo Installing Dell Command Update...
-msiexec /i "%~dp0DellCommandUpdateApp.msi" /qn && (
-    echo Dell Command Update Installed Successfully.
+echo Installing Dell Command Update using winget...
+winget install -e --id Dell.CommandUpdate --silent && (
+    echo Dell Command Update installed successfully.
 ) || (
-    echo Dell Command Update Installation Failed.
+    echo Winget installation failed, falling back to local MSI...
+    msiexec /i "%~dp0DellCommandUpdateApp.msi" /qn && (
+        echo Dell Command Update installed successfully using local MSI ^(may be outdated^).
+    ) || (
+        echo Dell Command Update installation failed.
+    )
 )
+
 
 :FinishedDellCommandUpdate
 echo.
