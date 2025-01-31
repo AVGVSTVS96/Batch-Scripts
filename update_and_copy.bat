@@ -1,9 +1,15 @@
 :: Put this file in USB root, it will update all scripts on the USB
-:: When adding new scripts, they must be moved from Batch Scripts/ to the USB root manually
-:: This script will update all Batch Scripts/ as well as all scripts that also exist in the USB root
+:: When adding new scripts, they must be moved from Batch Scripts/
+:: to the USB root manually
+:: This script will update all Batch Scripts/ as well as all scripts
+:: that also exist in the USB root
 
 @echo off
 setlocal enabledelayedexpansion
+
+:: Track if we should delete .gitconfig after script
+set "DELETE_AFTER=0"
+if not exist "%USERPROFILE%\.gitconfig" set "DELETE_AFTER=1"
 
 :: Store the USB drive letter
 set "USB_DRIVE=%~d0"
@@ -45,6 +51,7 @@ echo Fetching latest changes in Batch Scripts...
 if %errorlevel% neq 0 (
     echo Error: Fetching latest changes failed. Exiting script.
     cd ..
+    if %DELETE_AFTER%==1 if exist "%USERPROFILE%\.gitconfig" del "%USERPROFILE%\.gitconfig"
     pause
     exit /b %errorlevel%
 )
@@ -58,4 +65,8 @@ robocopy . .. /XL /XX
 cd ..
 echo Update complete. All scripts are now up-to-date.
 echo.
+
+if %DELETE_AFTER%==1 if exist "%USERPROFILE%\.gitconfig" del "%USERPROFILE%\.gitconfig"
+
 pause
+
