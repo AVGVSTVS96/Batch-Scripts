@@ -4,7 +4,6 @@ echo Checking for installed Dell Command Update versions...
 :: Check if Dell.CommandUpdate is installed
 winget list --id Dell.CommandUpdate >nul 2>&1
 if %ERRORLEVEL% equ 0 (
-    echo Found Dell.CommandUpdate. Uninstalling...
     winget uninstall --id Dell.CommandUpdate
     if %ERRORLEVEL% equ 0 (
         echo Dell.CommandUpdate uninstalled successfully.
@@ -17,7 +16,6 @@ if %ERRORLEVEL% equ 0 (
 :: Check if Dell.CommandUpdate.Universal is installed
 winget list --id Dell.CommandUpdate.Universal >nul 2>&1
 if %ERRORLEVEL% equ 0 (
-    echo Found Dell.CommandUpdate.Universal. Uninstalling...
     winget uninstall --id Dell.CommandUpdate.Universal
     if %ERRORLEVEL% equ 0 (
         echo Dell.CommandUpdate.Universal uninstalled successfully.
