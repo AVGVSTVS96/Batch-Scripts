@@ -22,7 +22,7 @@ for %%P in ("%ProgramFiles(x86)%\Dell\CommandUpdate" "%ProgramFiles%\Dell\Comman
 )
 
 echo Installing Dell Command Update using winget...
-winget install -e --id Dell.CommandUpdate --accept-source-agreements && (
+winget install -e --id Dell.CommandUpdate --accept-source-agreements --silent && (
     echo Dell Command Update installed successfully.
 ) || (
     echo Winget installation failed, falling back to local MSI...
