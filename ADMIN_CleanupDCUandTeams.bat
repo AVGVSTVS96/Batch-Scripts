@@ -6,7 +6,7 @@ set "found=0"
 
 echo Starting cleanup...
 for %%P in (%packages%) do (
-    winget list --id %%P >nul 2>&1
+    winget list --id %%P --accept-source-agreements >nul 2>&1
     if !ERRORLEVEL! equ 0 (
         set "found=1"
         winget uninstall --id %%P
