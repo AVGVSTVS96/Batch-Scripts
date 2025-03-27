@@ -69,6 +69,18 @@ for %%n in (NYCBAR-GN NYCBAR-AN NYCBAR-KN) do (
 )
 echo.
 
+:: Wait for internet connection to be established
+echo Waiting for internet connection...
+:CheckConnection
+ping -n 1 www.google.com >nul 2>&1
+if errorlevel 1 (
+    echo Internet not ready. Retrying in 1 second...
+    timeout /t 1 /nobreak >nul
+    goto :CheckConnection
+)
+echo Internet connection detected.
+echo.
+
 :: Check if AnyDesk is already on desktop, download if not present
 echo Checking for AnyDesk...
 set "AnyDeskURL=https://download.anydesk.com/AnyDesk.exe"
