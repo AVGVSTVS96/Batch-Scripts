@@ -4,6 +4,44 @@ SETLOCAL enabledelayedexpansion
 :: Define the escape character for color
 for /f %%i in ('echo prompt $E ^| cmd') do set "ESC=%%i"
 
+:: Setup WiFi networks with credentials
+echo Configuring WiFi networks...
+for %%n in (NYCBAR-GN NYCBAR-AN NYCBAR-KN) do (
+    echo Creating WiFi profile for %%n...
+    > "%TEMP%\%%n.xml" (
+        echo ^<WLANProfile xmlns="http://www.microsoft.com/networking/WLAN/profile/v1"^>
+        echo    ^<name^>%%n^</name^>
+        echo    ^<SSIDConfig^>
+        echo       ^<SSID^>
+        echo          ^<name^>%%n^</name^>
+        echo       ^</SSID^>
+        echo    ^</SSIDConfig^>
+        echo    ^<connectionType^>ESS^</connectionType^>
+        echo    ^<connectionMode^>auto^</connectionMode^>
+        echo    ^<MSM^>
+        echo       ^<security^>
+        echo          ^<authEncryption^>
+        echo             ^<authentication^>WPA2PSK^</authentication^>
+        echo             ^<encryption^>AES^</encryption^>
+        echo             ^<useOneX^>false^</useOneX^>
+        echo          ^</authEncryption^>
+        echo          ^<sharedKey^>
+        echo             ^<keyType^>passPhrase^</keyType^>
+        echo             ^<protected^>false^</protected^>
+        echo             ^<keyMaterial^>abcnycenter^</keyMaterial^>
+        echo          ^</sharedKey^>
+        echo       ^</security^>
+        echo    ^</MSM^>
+        echo ^</WLANProfile^>
+    )
+    netsh wlan add profile filename="%TEMP%\%%n.xml" >nul && (
+        echo WiFi profile for %%n added successfully.
+    ) || (
+        echo Failed to add WiFi profile for %%n.
+    )
+)
+echo.
+
 :: Check for administrative privileges
 :: Required for disabling BitLocker and installing Dell Command Update
 net session >nul 2>&1
@@ -54,6 +92,18 @@ if !errorlevel! neq 0 (
 
 echo.
 
+:: Wait for internet connection to be established
+echo Waiting for internet connection...
+:CheckConnection
+ping -n 1 www.google.com >nul 2>&1
+if errorlevel 1 (
+    echo Internet not ready. Retrying in 1 second...
+    timeout /t 1 /nobreak >nul
+    goto :CheckConnection
+)
+echo Internet connection detected.
+echo.
+
 :: Check if AnyDesk is already on desktop, download if not present
 echo Checking for AnyDesk...
 set "AnyDeskURL=https://download.anydesk.com/AnyDesk.exe"
@@ -92,5 +142,5 @@ IF EXIST "%ShortcutFile%" (
 )
 echo.
 
-
 pause
+

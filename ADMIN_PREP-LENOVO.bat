@@ -4,33 +4,6 @@ SETLOCAL enabledelayedexpansion
 :: Define the escape character for color
 for /f %%i in ('echo prompt $E ^| cmd') do set "ESC=%%i"
 
-:: Check for administrative privileges
-:: Required for disabling BitLocker and installing Dell Command Update
-net session >nul 2>&1
-if %errorlevel% neq 0 (
-    echo %ESC%[1;91mError:%ESC%[0m BitLocker and Dell Command Update scripts require administrative privileges...
-    echo Run this script in an admin terminal.
-    goto :SkipBitLocker
-)
-
-:: Disable active BitLocker encryption processes
-echo %ESC%[1;94mDisabling active BitLocker encryption processes...%ESC%[0m
-manage-bde -off C: > nul 2>&1
-
-:: Stop and disable the BitLocker service itself
-echo %ESC%[1;94mDisabling BitLocker service...%ESC%[0m
-net stop BDESVC >nul 2>&1
-sc config "BDESVC" start= disabled >nul 2>&1
-if !errorlevel! neq 0 (
-    echo %ESC%[1;91mError: Could not disable the BitLocker service.%ESC%[0m
-) else (
-    echo %ESC%[1;92mBitLocker service has been disabled.%ESC%[0m
-)
-
-:SkipBitLocker
-
-echo.
-
 :: Setup WiFi networks with credentials
 echo Configuring WiFi networks...
 for %%n in (NYCBAR-GN NYCBAR-AN NYCBAR-KN) do (
@@ -68,6 +41,34 @@ for %%n in (NYCBAR-GN NYCBAR-AN NYCBAR-KN) do (
     )
 )
 echo.
+
+:: Check for administrative privileges
+:: Required for disabling BitLocker and installing Dell Command Update
+net session >nul 2>&1
+if %errorlevel% neq 0 (
+    echo %ESC%[1;91mError:%ESC%[0m BitLocker and Dell Command Update scripts require administrative privileges...
+    echo Run this script in an admin terminal.
+    goto :SkipBitLocker
+)
+
+:: Disable active BitLocker encryption processes
+echo %ESC%[1;94mDisabling active BitLocker encryption processes...%ESC%[0m
+manage-bde -off C: > nul 2>&1
+
+:: Stop and disable the BitLocker service itself
+echo %ESC%[1;94mDisabling BitLocker service...%ESC%[0m
+net stop BDESVC >nul 2>&1
+sc config "BDESVC" start= disabled >nul 2>&1
+if !errorlevel! neq 0 (
+    echo %ESC%[1;91mError: Could not disable the BitLocker service.%ESC%[0m
+) else (
+    echo %ESC%[1;92mBitLocker service has been disabled.%ESC%[0m
+)
+
+:SkipBitLocker
+
+echo.
+
 
 :: Wait for internet connection to be established
 echo Waiting for internet connection...
