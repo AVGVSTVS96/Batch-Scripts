@@ -24,6 +24,8 @@ if '%errorlevel%' NEQ '0' (
 set "packages=Dell.CommandUpdate Dell.CommandUpdate.Universal Microsoft.Teams.Free"
 set "found=0"
 
+echo This script will uninstall Dell Command Update, and the old Microsoft Teams app.
+echo.
 echo Starting cleanup...
 for %%P in (%packages%) do (
     winget list --id %%P --accept-source-agreements >nul 2>&1

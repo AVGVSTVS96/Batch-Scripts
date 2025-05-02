@@ -24,6 +24,9 @@ if '%errorlevel%' NEQ '0' (
 :: Define the escape character for color
 for /f %%i in ('echo prompt $E ^| cmd') do set "ESC=%%i"
 
+echo This script will disable any active BitLocker encryption processes and disable the BitLocker service.
+echo.
+
 :: Disable active BitLocker encryption processes
 echo %ESC%[1;94mDisabling active BitLocker encryption processes...%ESC%[0m
 manage-bde -off C: > nul 2>&1

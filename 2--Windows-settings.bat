@@ -4,6 +4,10 @@ SETLOCAL enabledelayedexpansion
 :: Define the escape character for color
 for /f %%i in ('echo prompt $E ^| cmd') do set "ESC=%%i"
 
+echo This script will set up sleep and display settings
+echo It will also open default app settings for Chrome and screensaver settings to set those manually
+echo.
+
 powercfg -change -monitor-timeout-dc 5
 powercfg -change -standby-timeout-dc 10
 

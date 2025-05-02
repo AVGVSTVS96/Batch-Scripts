@@ -1,12 +1,13 @@
 :: Put this file in USB root, it will update all scripts on the USB
 :: When adding new scripts, they must be moved from Batch Scripts/
 :: to the USB root manually
-:: This script will update all Batch Scripts/ as well as all scripts
-:: that also exist in the USB root
+:: This script will update all Batch Scripts/ and will sync the latest
+:: scripts to the USB root.
 
 @echo off
 setlocal enabledelayedexpansion
 
+:: This ensures .gitconfig is not modified if it exists on the system
 :: Track if we should delete .gitconfig after script
 set "DELETE_AFTER=0"
 if not exist "%USERPROFILE%\.gitconfig" set "DELETE_AFTER=1"

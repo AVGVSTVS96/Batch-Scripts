@@ -24,6 +24,13 @@ if '%errorlevel%' NEQ '0' (
 :: Define the escape character for color
 for /f %%i in ('echo prompt $E ^| cmd') do set "ESC=%%i"
 
+echo This script will run prep tasks for the system:
+echo - Setup WiFi networks
+echo - Disable BitLocker
+echo - Add AnyDesk to desktop without installing
+echo - Add Remote Desktop shortcut to desktop
+echo.
+
 :: Setup WiFi networks with credentials
 echo Configuring WiFi networks...
 for %%n in (NYCBAR-GN NYCBAR-AN NYCBAR-KN) do (

@@ -1,6 +1,8 @@
 @echo off
 SETLOCAL
 
+echo This script will download and add AnyDesk to the desktop without installing it.
+
 :: Check if AnyDesk is already on desktop, download if not present
 echo Checking for AnyDesk...
 set "AnyDeskURL=https://download.anydesk.com/AnyDesk.exe"

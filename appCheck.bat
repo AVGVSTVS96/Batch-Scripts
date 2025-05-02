@@ -2,6 +2,8 @@
 SETLOCAL EnableDelayedExpansion
 set "missingApps="
 
+echo This script checks apps installed on the system, the computer name, and the current display and sleep settings.
+
 :: Adobe Acrobat 
 if exist "%ProgramFiles%\Adobe\Acrobat 11.0" goto FoundAcro
 if exist "%ProgramFiles(x86)%\Adobe\Acrobat 11.0" goto FoundAcro
