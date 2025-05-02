@@ -1,16 +1,28 @@
 @echo off
 SETLOCAL enabledelayedexpansion
 
+:: Check for administrative privileges and self-elevate if needed
+>nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
+if '%errorlevel%' NEQ '0' (
+    echo Requesting administrative privileges...
+    goto UACPrompt
+) else (
+    goto gotAdmin
+)
+
+:UACPrompt
+    echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
+    echo UAC.ShellExecute "%~s0", "", "", "runas", 1 >> "%temp%\getadmin.vbs"
+    "%temp%\getadmin.vbs"
+    exit /B
+
+:gotAdmin
+    if exist "%temp%\getadmin.vbs" del "%temp%\getadmin.vbs"
+    pushd "%CD%"
+    CD /D "%~dp0"
+
 :: Define the escape character for color
 for /f %%i in ('echo prompt $E ^| cmd') do set "ESC=%%i"
-
-:: Check for administrative privileges
-net session >nul 2>&1 || (
-    echo %ESC%[1;91mError: This script requires administrative privileges.%ESC%[0m
-    echo Run this script as an administrator to disable BitLocker.
-    pause
-    exit /b 1
-)
 
 :: Disable active BitLocker encryption processes
 echo %ESC%[1;94mDisabling active BitLocker encryption processes...%ESC%[0m
